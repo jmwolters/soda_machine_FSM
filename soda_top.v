@@ -14,6 +14,7 @@ output reg [2:0] state_display,
 output reg check_coin_in
 );
 
+/* Defining states as local parameters to use later on in the code*/
 localparam
 put_coin = 0,
 input1 = 1,
@@ -23,11 +24,12 @@ input3 = 4,
 return1 = 5,
 soda_out = 6;
 
+/*Adding extra registers for the next state and previous state of next.*/
 reg [2:0] next_state;
 reg prev_next;
 
 
-
+/* every clock cycle the state_display and prev_next gets updated at the posedge of the clock*/
 always @(posedge clk) begin
     state_display <= next_state;
     prev_next <= next;
@@ -35,9 +37,10 @@ end
 
 always @(*) begin
     if (reset == 1) begin
-        next_state = put_coin;
+        next_state = put_coin; //resets the machine at the next posedge of the clock.
     end
     if (next == 1 && prev_next == 0) begin
+        /*the every state defines the next state*/
         if (state_display == put_coin) begin
             case(coin_in)
                 2'b00: next_state = put_coin;
@@ -74,7 +77,7 @@ always @(*) begin
         end
     end
     
-    
+    /*Sets the outputs according to the current state*/
     case(state_display)
         put_coin: begin
             coin_out = 2'b00;
@@ -117,3 +120,14 @@ end
 
 endmodule
 
+
+
+
+
+
+
+
+
+
+
+//Thank me later ~ Jurre
